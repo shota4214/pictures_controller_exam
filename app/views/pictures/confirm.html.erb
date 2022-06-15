@@ -7,12 +7,12 @@
   <p>Picture</p>
   <%= image_tag(@picture.image.url) if @picture.image && @picture.image.url %>
   <%= form.hidden_field :image_cache %>
-  <p>本文:<%= @picture.content %></p>
-  <%= form.submit "登録する" %>
+  <p>Content:<%= @picture.content %></p>
+  <%= form.submit "push" %>
 <% end %>
 
 <%= form_with(model: @picture, local: true, url: new_picture_path, method: "get") do |form| %>
   <%= form.hidden_field :image_cache %>
   <%= form.hidden_field :content %>
-  <%= form.submit "戻る", name: "back" %>
+  <%= form.submit "back", name: "back", class: "btn btn-outline-success"%>
 <% end %>
