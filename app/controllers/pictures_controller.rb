@@ -12,7 +12,11 @@ class PicturesController < ApplicationController
 
   # GET /pictures/new
   def new
-    @picture = Picture.new
+    if params[:back]
+      @picture = Picture.new(picture_params)
+    else
+      @picture = Picture.new
+    end
   end
 
   # GET /pictures/1/edit
@@ -28,13 +32,13 @@ class PicturesController < ApplicationController
       @picture.user_id = current_user.id
       respond_to do |format|
         if @picture.save
-        redirect_to pictures_path, notice: "投稿完了"
-        # format.html { redirect_to picture_url(@picture), notice: "Picture was successfully created." }
-        # format.json { render :show, status: :created, location: @picture }
+        # redirect_to pictures_path, notice: "投稿完了"
+        format.html { redirect_to picture_url(@picture), notice: "Picture was successfully created." }
+        format.json { render :show, status: :created, location: @picture }
         else
-        render :new
-        # format.html { render :new, status: :unprocessable_entity }
-        # format.json { render json: @picture.errors, status: :unprocessable_entity }
+        # render :new
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @picture.errors, status: :unprocessable_entity }
         end
       end
     end
@@ -64,7 +68,9 @@ class PicturesController < ApplicationController
   end
 
   def confirm
-    @picture = Picture.new(picture_params)
+    # @picture = Picture.new(picture_params)
+    @picture = current_user.pictures.build(picture_params)
+    render :new if @picture.invalid?
   end
 
   private
