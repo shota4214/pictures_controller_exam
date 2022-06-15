@@ -22,14 +22,20 @@ class PicturesController < ApplicationController
   # POST /pictures or /pictures.json
   def create
     @picture = Picture.new(picture_params)
-
-    respond_to do |format|
-      if @picture.save
-        format.html { redirect_to picture_url(@picture), notice: "Picture was successfully created." }
-        format.json { render :show, status: :created, location: @picture }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @picture.errors, status: :unprocessable_entity }
+    if params[:back]
+      render :new
+    else
+      @picture.user_id = current_user.id
+      respond_to do |format|
+        if @picture.save
+        redirect_to pictures_path, notice: "投稿完了"
+        # format.html { redirect_to picture_url(@picture), notice: "Picture was successfully created." }
+        # format.json { render :show, status: :created, location: @picture }
+        else
+        render :new
+        # format.html { render :new, status: :unprocessable_entity }
+        # format.json { render json: @picture.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -55,6 +61,10 @@ class PicturesController < ApplicationController
       format.html { redirect_to pictures_url, notice: "Picture was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def confirm
+    @picture = Picture.new(picture_params)
   end
 
   private

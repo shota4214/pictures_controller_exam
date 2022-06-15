@@ -14,7 +14,7 @@
   <tbody>
     <% @pictures.each do |picture| %>
       <tr>
-        <td><%= image_tag picture.image.url %></td>
+        <td><%= image_tag picture.image.url, width: '30%', height: '30%' %></td>
         <td><%= picture.content %></td>
         <td><%= link_to 'Show', picture %></td>
         <td><%= link_to 'Edit', edit_picture_path(picture) %></td>
